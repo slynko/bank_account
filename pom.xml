@@ -14,6 +14,7 @@
         <lombok.version>1.18.22</lombok.version>
         <junit.version>4.13.2</junit.version>
         <slf4j.version>1.7.32</slf4j.version>
+        <slf4jlog4j.version>1.7.32</slf4jlog4j.version>
         <hamcrest.version>2.0.0.0</hamcrest.version>
 
     </properties>
@@ -35,6 +36,11 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4jlog4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>

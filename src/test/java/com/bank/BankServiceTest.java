@@ -9,10 +9,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.bank.account.model.TransactionType.CREDIT;
 import static com.bank.account.model.TransactionType.DEBIT;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
 
 public class BankServiceTest {
 
@@ -85,7 +88,7 @@ public class BankServiceTest {
         final var transactionCredit = Transaction.from(BigDecimal.valueOf(5000.00), CREDIT, "salary");
         final var transactionDebit = Transaction.from(BigDecimal.valueOf(555.55), DEBIT, "vacation");
         final var transactionCreditAnother = Transaction.from(BigDecimal.valueOf(100.00), CREDIT, "revenue");
-        final var transactionDebitAnother = Transaction.from(BigDecimal.valueOf(123111.45), DEBIT, "shopping");
+        final var transactionDebitAnother = Transaction.from(BigDecimal.valueOf(123.45), DEBIT, "shopping");
 
         //when
         accountOperator.executeTransaction(account, transactionCredit);
@@ -96,6 +99,29 @@ public class BankServiceTest {
         //then
         assertThat(account.getBalance(), Matchers.comparesEqualTo(BigDecimal.valueOf(4421.0)));
     }
+
+    @Test
+    public void should_get_history() {
+        //given
+        final var transactionCredit = Transaction.from(BigDecimal.valueOf(5000.00), CREDIT, "salary");
+        final var transactionDebit = Transaction.from(BigDecimal.valueOf(555.55), DEBIT, "vacation");
+        final var transactionCreditAnother = Transaction.from(BigDecimal.valueOf(100.00), CREDIT, "revenue");
+        final var transactionDebitAnother = Transaction.from(BigDecimal.valueOf(123111.45), DEBIT, "shopping");
+        final var expectedHistory = List.of(transactionCredit, transactionDebit, transactionCreditAnother, transactionDebitAnother).stream()
+                .map(Transaction::toString)
+                .collect(Collectors.joining(", "));
+        //when
+        accountOperator.executeTransaction(account, transactionCredit);
+        accountOperator.executeTransaction(account, transactionDebit);
+        accountOperator.executeTransaction(account, transactionCreditAnother);
+        accountOperator.executeTransaction(account, transactionDebitAnother);
+
+        final String resultHistory = accountOperator.getHistory(account);
+
+        //then
+        assertEquals(expectedHistory, resultHistory);
+    }
+
 
     private void prepareAccountWithSum(final BankAccount account, final BigDecimal amount) {
         final var transactionCredit = Transaction.from(amount, CREDIT, "preparing amount");

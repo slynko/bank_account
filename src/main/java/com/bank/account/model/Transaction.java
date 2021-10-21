@@ -9,7 +9,7 @@ import java.util.UUID;
 @Value
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Transaction {
-    UUID id;
+    @ToString.Exclude UUID id;
     BigDecimal amount;
     TransactionType type;
     OffsetDateTime date;

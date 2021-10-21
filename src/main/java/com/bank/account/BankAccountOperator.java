@@ -7,4 +7,6 @@ public interface BankAccountOperator {
 
     void executeTransaction(final BankAccount account, final Transaction transaction);
 
+    String getHistory(final BankAccount account);
+
 }
