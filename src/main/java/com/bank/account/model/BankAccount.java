@@ -1,15 +1,18 @@
 package com.bank.account.model;
 
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.util.*;
 
 import static com.bank.account.model.TransactionType.CREDIT;
+import static com.bank.account.validation.ValidationUtils.warnIfBelow0;
 
 @Data
 @Setter(AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Slf4j
 public class BankAccount {
     private UUID id;
     private BigDecimal balance;
@@ -22,6 +25,7 @@ public class BankAccount {
     public void acceptTransaction(final Transaction transaction) {
         transactions.add(transaction);
         balance = calculateBalance();
+        warnIfBelow0(balance);
     }
 
     private BigDecimal calculateBalance() {
@@ -35,18 +39,5 @@ public class BankAccount {
                             }
                         },
                         BigDecimal::add);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        BankAccount that = (BankAccount) o;
-        return id.equals(that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }

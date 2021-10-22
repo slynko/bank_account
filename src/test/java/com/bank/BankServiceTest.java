@@ -9,8 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.bank.account.model.TransactionType.CREDIT;
 import static com.bank.account.model.TransactionType.DEBIT;
@@ -107,7 +107,7 @@ public class BankServiceTest {
         final var transactionDebit = Transaction.from(BigDecimal.valueOf(555.55), DEBIT, "vacation");
         final var transactionCreditAnother = Transaction.from(BigDecimal.valueOf(100.00), CREDIT, "revenue");
         final var transactionDebitAnother = Transaction.from(BigDecimal.valueOf(123111.45), DEBIT, "shopping");
-        final var expectedHistory = List.of(transactionCredit, transactionDebit, transactionCreditAnother, transactionDebitAnother).stream()
+        final var expectedHistory = Stream.of(transactionCredit, transactionDebit, transactionCreditAnother, transactionDebitAnother)
                 .map(Transaction::toString)
                 .collect(Collectors.joining(", "));
         //when

@@ -4,6 +4,7 @@ import com.bank.account.model.BankAccount;
 import com.bank.account.model.Transaction;
 import lombok.extern.slf4j.Slf4j;
 
+import java.math.BigDecimal;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -21,6 +22,11 @@ public class BankService implements BankAccountOperator {
                 .collect(Collectors.joining(", "));
         log.info(history);
         return history;
+    }
+
+    @Override
+    public BigDecimal getBalance(BankAccount account) {
+        return account.getBalance();
     }
 
 }
